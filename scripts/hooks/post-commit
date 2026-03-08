@@ -19,6 +19,7 @@ awk -v msg="- $COMMIT_MSG ($COMMIT_DATE)" '
     getline
     print $0
     print msg
+    print ""
     next
   }
   { print }

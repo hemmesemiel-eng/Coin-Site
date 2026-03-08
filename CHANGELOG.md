@@ -2,6 +2,8 @@
 
 ## [Unreleased] — Planning fase
 
+- Fix post-commit hook path resolution (2026-03-08)
+
 ### Toegevoegd
 - SPEC.md — initiële projectbeschrijving
 - Design document (`docs/plans/2026-03-08-fc26-coins-website-design.md`)
