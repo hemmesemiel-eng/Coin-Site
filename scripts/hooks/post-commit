@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Haal het laatste commit bericht en de datum op
+COMMIT_MSG=$(git log -1 --pretty=%s)
+COMMIT_DATE=$(date +"%Y-%m-%d")
+
+# Sla over als dit al een changelog-commit is (voorkomt oneindige lus)
+if echo "$COMMIT_MSG" | grep -qi "changelog\|update docs\|docs:"; then
+  exit 0
+fi
+
+# Voeg de commit toe aan CHANGELOG.md onder [Unreleased]
+TEMP=$(mktemp)
+awk -v msg="- $COMMIT_MSG ($COMMIT_DATE)" '
+  /^## \[Unreleased\]/ {
+    print $0
+    getline
+    print $0
+    print msg
+    next
+  }
+  { print }
+' CHANGELOG.md > "$TEMP" && mv "$TEMP" CHANGELOG.md
+
+echo "CHANGELOG.md bijgewerkt met: $COMMIT_MSG"
