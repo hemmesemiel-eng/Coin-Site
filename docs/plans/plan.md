@@ -39,10 +39,9 @@
 - [ ] Configureer Tailwind met custom kleuren (`#0a0a0f`, `#00ff87`, `#6c63ff`)
 - [ ] Voeg Space Grotesk en Inter toe via Google Fonts
 - [ ] Maak `.env.local` aan met placeholders voor Supabase URL/key en NOWPayments API key
-- [ ] Push naar GitHub repository
-- [ ] Koppel Vercel aan de GitHub repository
+- [ ] Hosting via Vercel — eigenaar regelt dit zelf via vercel.com
 
-**Resultaat:** Site draait lokaal op `localhost:3000` en deployt automatisch naar Vercel.
+**Resultaat:** Site draait lokaal op `localhost:3000`.
 
 ---
 

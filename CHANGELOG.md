@@ -2,6 +2,10 @@
 
 ## [Unreleased] — Planning fase
 
+- Add brand name, pricing, payment methods, bank transfer flow, Privacy Policy (2026-03-08)
+
+- Update plan: guest checkout, payment fallback, admin security, ToS, footer layout (2026-03-08)
+
 - Fix post-commit hook path resolution (2026-03-08)
 
 ### Toegevoegd
