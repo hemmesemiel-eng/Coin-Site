@@ -1,0 +1,26 @@
+# Environment variables — nooit committen
+.env
+.env.local
+.env.*.local
+
+# Next.js build output
+.next/
+out/
+
+# Dependencies
+node_modules/
+
+# Vercel
+.vercel
+
+# OS bestanden
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
