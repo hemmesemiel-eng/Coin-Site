@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Zoek de repo root op zodat het script altijd het juiste CHANGELOG.md vindt
+REPO_ROOT=$(git rev-parse --show-toplevel)
+CHANGELOG="$REPO_ROOT/CHANGELOG.md"
+
+COMMIT_MSG=$(git log -1 --pretty=%s)
+COMMIT_DATE=$(date +"%Y-%m-%d")
+
+# Sla over als dit al een changelog-commit is (voorkomt oneindige lus)
+if echo "$COMMIT_MSG" | grep -qi "changelog\|update docs\|docs:"; then
+  exit 0
+fi
+
+TEMP=$(mktemp)
+awk -v msg="- $COMMIT_MSG ($COMMIT_DATE)" '
+  /^## \[Unreleased\]/ {
+    print $0
+    getline
+    print $0
+    print msg
+    print ""
+    next
+  }
+  { print }
+' "$CHANGELOG" > "$TEMP" && mv "$TEMP" "$CHANGELOG"
+
+echo "CHANGELOG.md bijgewerkt met: $COMMIT_MSG"

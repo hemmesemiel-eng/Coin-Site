@@ -1,13 +1,14 @@
-# FC 26 Coins Website
+# Coinfactory
 
 Conversion-optimized website for selling FC 26 coins to PS4, PS5, Xbox and PC players.
 
 ## Tech Stack
 
-- **Frontend:** Next.js (App Router)
+- **Frontend:** Next.js 16 (App Router, TypeScript)
+- **Styling:** Tailwind CSS v4
 - **Database + Auth:** Supabase
 - **Hosting:** Vercel
-- **Payments:** NOWPayments (crypto) + manual bank transfer
+- **Payments:** NOWPayments (crypto) + Bank Transfer + Paysafecard + Skrill
 
 ## Local Setup
 
@@ -26,7 +27,7 @@ Conversion-optimized website for selling FC 26 coins to PS4, PS5, Xbox and PC pl
    ```bash
    cp .env.example .env.local
    ```
-   Fill in the values in `.env.local` (see Environment Variables below).
+   Fill in the values in `.env.local`.
 
 4. Run the development server
    ```bash
@@ -38,13 +39,14 @@ Conversion-optimized website for selling FC 26 coins to PS4, PS5, Xbox and PC pl
 
 | Variable | Description |
 |----------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase public anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (server-only) |
 | `NOWPAYMENTS_API_KEY` | NOWPayments API key |
 | `NOWPAYMENTS_IPN_SECRET` | NOWPayments webhook secret |
 | `RESEND_API_KEY` | Resend API key for transactional emails |
-| `OWNER_EMAIL` | Email address to receive order notifications |
+| `OWNER_EMAIL` | Email address for order notifications |
+| `ENCRYPTION_KEY` | AES-256 key — generate with: `openssl rand -hex 32` |
 | `NEXT_PUBLIC_SITE_URL` | Base URL of the site |
 
 ## Project Structure
@@ -52,7 +54,7 @@ Conversion-optimized website for selling FC 26 coins to PS4, PS5, Xbox and PC pl
 ```
 app/              # Next.js pages (App Router)
 components/       # Reusable UI components
-lib/              # Supabase client, NOWPayments, helpers
+lib/              # Supabase client, payment helpers
 docs/plans/       # Design and implementation documents
 ```
 
@@ -65,7 +67,5 @@ docs/plans/       # Design and implementation documents
 
 | Branch | Purpose |
 |--------|---------|
-| `main` | Production — what's live on Vercel |
-| `dev` | Active development — build here |
-
-Always work on `dev`. Merge to `main` only when a phase is complete and tested.
+| `main` | Production |
+| `dev` | Active development |

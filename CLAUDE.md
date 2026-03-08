@@ -1,7 +1,8 @@
-# FC 26 Coins Website
+# Coinfactory
 
+**Merknaam:** Coinfactory
 Een conversion-geoptimaliseerde website voor het verkopen van FC 26 coins.
-Gebouwd met Next.js + Supabase + Vercel. Betalingen via NOWPayments (crypto) en handmatige overboeking.
+Gebouwd met Next.js + Supabase + Vercel.
 
 ## Project Status
 
@@ -25,7 +26,7 @@ Zie `docs/plans/2026-03-08-fc26-coins-website-design.md` voor het volledige desi
 - **Frontend:** Next.js (React)
 - **Database + Auth:** Supabase (real-time, ingebouwde auth)
 - **Hosting:** Vercel (fallback: Railway of DigitalOcean)
-- **Betalingen:** NOWPayments API (crypto) + handmatige overboeking
+- **Betalingen:** NOWPayments (crypto) + bank transfer + Paysafecard + Skrill
 - **Taal van de site:** Engels
 
 ## Architectuur
@@ -44,8 +45,32 @@ Zie `docs/plans/2026-03-08-fc26-coins-website-design.md` voor het volledige desi
 | `/bulk-orders` | VIP-pagina voor orders van 10M+ coins |
 | `/dashboard` | Klantendashboard — orderstatus + loyaliteitskorting |
 | `/contact` | Contactformulier voor vragen en support |
-| `/admin` | Owner-only — prijzen en orderstatus beheren (beveiligd via Supabase Auth, niet toegankelijk voor bezoekers) |
-| `/thank-you` | Bedanktpagina na succesvolle betaling |
+| `/admin` | Owner-only — server-side beveiligd via Next.js middleware + Supabase app_metadata role |
+| `/thank-you` | Bedanktpagina + guest-to-account conversie prompt |
+| `/payment-failed` | Betaalmislukking — 3 opties: retry / andere methode / contact |
+| `/terms` | Terms of Service — alleen via footer bereikbaar, niet in navigatie |
+
+## Guest Checkout & Account Flow
+
+- Klanten bestellen zonder account (guest checkout)
+- Na betaling op `/thank-you`: prompt om account aan te maken
+  - Copy: "Create a free account to track your order, earn loyalty discounts, and get exclusive deals"
+  - Email is al pre-filled (ingevuld tijdens bestelling)
+  - Niet verplicht — duidelijke "Maybe later" optie
+
+## Admin Panel Beveiliging
+
+- Beveiligd via Next.js `middleware.ts` (server-side, niet client-side)
+- Controleert Supabase sessie + owner-rol via `app_metadata` (niet `user_metadata`)
+- Zonder geldige owner-sessie: redirect naar `/login`
+
+## Betaalmislukking Fallback
+
+- `/payment-failed` pagina met 3 opties:
+  1. "Try again" → nieuwe NOWPayments betaling aanmaken
+  2. "Choose different payment method" → terug naar betaalmethode stap
+  3. "Contact us" → `/contact`
+- NOWPayments betalingen verlopen na ~20 min → duidelijke melding + retry knop
 
 ## Order Configurator (homepage — progressive reveal)
 
@@ -58,9 +83,9 @@ Elk stap verschijnt pas als de vorige is voltooid:
      ↓ verschijnt pas na stap 1+2
 [4] Gegevens invullen     EA Email + wachtwoord + 6x backup codes
                           Naast het backup codes veld: kleine knop "Where do I find these?"
-                          → opent inline YouTube-video (makkelijk te sluiten)
+                          → opent inline YouTube-video: https://www.youtube.com/watch?v=nvIH96pXx-c
      ↓ verschijnt pas als alles ingevuld
-[5] Betaalmethode         Crypto / handmatige overboeking
+[5] Betaalmethode         Crypto (NOWPayments) / Bank Transfer / Paysafecard / Skrill
 [6] Betalen               → Redirect naar /thank-you
 ```
 
@@ -83,16 +108,37 @@ Ingelogde klant met actieve korting ziet bovenaan de configurator:
 - Fonts: Space Grotesk (headlines) + Inter (body)
 - Stijl: donker, strak, premium gaming
 - Mobile-first, volledig responsive
-- Referentie: Coinfactory (structuur overnemen, design overtreffen)
+- Referentie voor stijl: structuur van Coinfactory overnemen, design overtreffen
 
-## Openstaande Punten
+## Prijzen
 
-- [ ] YouTube-link voor "How do I find my backup codes?"
+- $10 per 1.000.000 coins — geldt voor alle platforms (PS4 / PS5 / Xbox / PC)
+- Instelbaar via admin panel, aanpasbaar per platform
+
+## Betaalmethoden
+
+| Methode | Integratie | Opmerking |
+|---------|-----------|-----------|
+| Crypto (BTC/ETH/USDT/LTC) | NOWPayments API | Automatisch, geen chargebacks |
+| Bank Transfer | Handmatig | Uniek referentienummer per order, bevestiging via admin |
+| Paysafecard | Paysafecard API | Prepaid, populair bij gamers, anoniem |
+| Skrill | Skrill API | Digitale wallet, minder streng dan PayPal |
+
+**Bank Transfer flow:**
+1. Klant kiest bank transfer → ziet IBAN + referentienummer (formaat: `CF-XXXXXX`)
+2. Order status: "Awaiting Payment"
+3. Klant heeft 24 uur om over te maken
+4. Owner ziet in admin: verwacht bedrag + referentie per openstaande order
+5. Owner klikt "Confirm Payment Received" → order naar "Queued"
+
+## Openstaande Punten (voor launch, niet voor coderen)
+
 - [ ] Kortingstiers definiëren (bv. na 1e order = 3%, na 3e = 5%)
-- [ ] Begintarieven voor coins per platform
 - [ ] Crypto wallet-adressen voor NOWPayments
-- [ ] Bankgegevens voor handmatige overboekingen
-- [ ] Merknaam en logo
+- [ ] IBAN + banknaam voor handmatige overboekingen
+- [ ] Paysafecard merchant account aanmaken
+- [ ] Skrill merchant account aanmaken
+- [ ] Logo ontwerpen
 
 ## Besloten Features
 
