@@ -1,5 +1,8 @@
-# FC 26 Coins Website — Implementation Plan
+# Coinfactory — Implementation Plan
 
+**Merknaam:** Coinfactory
+**Prijs:** $10 per 1.000.000 coins (alle platforms)
+**YouTube backup codes:** https://www.youtube.com/watch?v=nvIH96pXx-c
 **Datum:** 2026-03-08
 **Design doc:** `docs/plans/2026-03-08-fc26-coins-website-design.md`
 **Status:** Gereed voor implementatie
@@ -231,22 +234,41 @@
 
 ---
 
-## Fase 8 — NOWPayments Integratie
+## Fase 8 — Betaalintegraties
 
-**Doel:** Crypto-betalingen verwerken en orderstatus automatisch bijwerken.
+**Doel:** Alle betaalmethoden verwerken en orderstatus bijwerken.
 
+### Crypto — NOWPayments
 - [ ] Maak NOWPayments account aan en genereer API key
 - [ ] Bouw `lib/nowpayments.ts` — API-wrapper
-- [ ] Bij checkout: maak betaling aan via NOWPayments API → stuur klant naar betaalpagina
-- [ ] Bouw webhook endpoint `app/api/nowpayments/webhook/route.ts`:
-  - Ontvangt betaalbevestiging van NOWPayments
-  - Verifieert handtekening
-  - Zet orderstatus op "Queued" in Supabase
-- [ ] Handmatige overboeking:
-  - Toon bankgegevens na checkout
-  - Order blijft op "pending" tot jij handmatig bevestigt in admin panel
+- [ ] Bij checkout: maak betaling aan via NOWPayments API → redirect klant
+- [ ] Bouw webhook `app/api/nowpayments/webhook/route.ts`:
+  - Ontvangt bevestiging, verifieert handtekening, zet status op "Queued"
+  - Afhandeling: betaling verlopen → status "expired", underpaid → notificatie
 
-**Resultaat:** Crypto-betalingen worden automatisch verwerkt.
+### Bank Transfer
+- [ ] Genereer uniek referentienummer per order: `CF-` + 6 random tekens
+- [ ] Toon IBAN, naam, bedrag en referentie na checkout
+- [ ] Order status: "Awaiting Payment" (24 uur geldig)
+- [ ] Admin toont lijst van openstaande bankoverschrijvingen
+- [ ] "Confirm Payment Received" knop → order naar "Queued"
+
+### Paysafecard
+- [ ] Maak Paysafecard merchant account aan
+- [ ] Integreer Paysafecard Payments API
+- [ ] Klant voert PIN-code in → directe verificatie via API → "Queued"
+
+### Skrill
+- [ ] Maak Skrill merchant account aan
+- [ ] Integreer Skrill Quick Checkout
+- [ ] Webhook bevestigt betaling → "Queued"
+
+### Betaalmislukking (alle methoden)
+- [ ] Bij mislukking: redirect naar `/payment-failed`
+- [ ] Order status: "failed" in Supabase
+- [ ] "Try again" maakt nieuwe betaalpoging aan voor dezelfde order
+
+**Resultaat:** Alle 4 betaalmethoden werken end-to-end.
 
 ---
 
@@ -283,9 +305,13 @@
 - [ ] `/how-it-works` — visuele 4-stappen uitleg (Site → Encryption → Farm → Account)
 - [ ] `/bulk-orders` — VIP-landingspagina met contactformulier
 - [ ] `/contact` — contactformulier (naam, e-mail, bericht) → stuurt e-mail naar owner
-- [ ] `/terms` — Terms of Service pagina:
-  - Alleen toegankelijk via footer-link, niet in navigatie
-  - Inhoud: betalingen zijn definitief (geen chargebacks), EA ToS-disclaimer (klant is zelf verantwoordelijk voor accountrisico's), geen garantie op bans
+- [ ] `/terms` — Terms of Service (alleen via footer):
+  - Betalingen zijn definitief, geen chargebacks
+  - EA ToS-disclaimer: klant is zelf verantwoordelijk voor accountrisico's
+- [ ] `/privacy` — Privacy Policy (alleen via footer):
+  - Welke data wordt verzameld (email, EA-gegevens)
+  - Hoe data wordt opgeslagen en beveiligd
+  - GDPR-rechten van de klant
 
 ---
 
@@ -324,9 +350,9 @@
 
 | Item | Wanneer nodig |
 |------|--------------|
-| YouTube-link backup codes uitleg | Fase 4 |
 | Kortingstiers (na X orders = Y%) | Fase 6 |
-| Begintarieven per platform | Fase 5 |
 | Crypto wallet / NOWPayments API key | Fase 8 |
-| Bankgegevens handmatige overboeking | Fase 8 |
-| Merknaam en logo | Fase 2 |
+| IBAN + banknaam voor bank transfer | Fase 8 |
+| Paysafecard merchant account | Fase 8 |
+| Skrill merchant account | Fase 8 |
+| Logo ontwerpen | Fase 2 |
