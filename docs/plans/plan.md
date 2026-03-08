@@ -11,16 +11,16 @@
 | Fase | Inhoud | Afhankelijkheid |
 |------|--------|----------------|
 | 1 | Project setup | — |
-| 2 | Layout, navigatie, design-systeem | Fase 1 |
+| 2 | Layout, navigatie, footer, design-systeem | Fase 1 |
 | 3 | Homepage — hero, trust, social proof | Fase 2 |
-| 4 | Order configurator | Fase 3 |
+| 4 | Order configurator + betaalflow + fallback | Fase 3 |
 | 5 | Supabase database + auth | Fase 1 |
-| 6 | Klantendashboard | Fase 5 |
-| 7 | Admin panel | Fase 5 |
-| 8 | NOWPayments integratie | Fase 5 |
+| 6 | Klantendashboard + guest-to-account flow | Fase 5 |
+| 7 | Admin panel (server-side beveiligd) | Fase 5 |
+| 8 | NOWPayments integratie + failure handling | Fase 5 |
 | 9 | E-mailnotificaties | Fase 8 |
 | 10 | Referral systeem | Fase 6 |
-| 11 | Overige pagina's | Fase 2 |
+| 11 | Overige pagina's (incl. Terms of Service) | Fase 2 |
 | 12 | FAQ per pagina | Fase 11 |
 | 13 | Cookie/privacy banner | Fase 2 |
 | 14 | Testen & deployment | Alle fasen |
@@ -52,7 +52,16 @@
   - Logo (placeholder) + links: Home / How It Works / Bulk Orders / Contact
   - Rechtsboven: "Order Now" CTA-knop (groen)
   - Op mobiel: hamburger-menu
-- [ ] Bouw `components/Footer.tsx` — links, copyright, privacy
+- [ ] Bouw `components/Footer.tsx` met 4-koloms layout:
+  ```
+  [Logo + tagline + social]  [Navigation]      [Legal]        [Betaalmethoden]
+                              Home              Terms          Crypto (BTC/ETH/USDT)
+                              How It Works      Privacy Policy Handmatige overboeking
+                              Bulk Orders       Contact
+                              Support
+  ─────────────────────────────────────────────────────────────────────────
+  © 2026 [Merknaam]. All rights reserved.  |  "Fast · Safe · Trusted"
+  ```
 - [ ] Maak basis design tokens (kleuren, spacing) als Tailwind config
 - [ ] Stel globale CSS in (scroll-gedrag, selectiekleur, etc.)
 
@@ -106,8 +115,14 @@
   - Crypto: redirect naar NOWPayments betaalpagina
   - Handmatig: toon bankgegevens + instructies
 - [ ] Ingelogde klant met korting: toon "Special deal for you: X% discount active" banner + "Order Now" knop bovenaan configurator
+- [ ] **Betaalmislukking fallback** — `/payment-failed` pagina met 3 opties:
+  1. "Try again" → maakt nieuwe NOWPayments betaling aan
+  2. "Choose different payment method" → terug naar stap 4 (betaalmethode)
+  3. "Contact us" → link naar `/contact`
+  - NOWPayments betalingen verlopen na ~20 minuten → toon duidelijke melding + "Try again" knop
+  - Voeg `expires_at` kolom toe aan orders tabel voor timeout-tracking
 
-**Resultaat:** Volledige bestelflow werkt end-to-end (zonder betaling nog).
+**Resultaat:** Volledige bestelflow werkt end-to-end inclusief foutafhandeling.
 
 ---
 
@@ -129,21 +144,24 @@
   | created_at | timestamp |
 
   **`orders`**
-  | kolom | type |
-  |-------|------|
-  | id | uuid |
-  | user_id | uuid (FK, nullable voor gasten) |
-  | platform | text (ps4/ps5/xbox/pc) |
-  | coin_amount | integer |
-  | price_paid | numeric |
-  | discount_applied | integer |
-  | ea_email | text |
-  | ea_password | text |
-  | backup_codes | text[] |
-  | payment_method | text |
-  | payment_status | text (pending/paid) |
-  | status | text (queued/transferring/completed) |
-  | created_at | timestamp |
+  | kolom | type | Opmerking |
+  |-------|------|-----------|
+  | id | uuid | |
+  | user_id | uuid (FK, nullable) | Null = gastbestelling |
+  | guest_email | text (nullable) | Voor gasten zonder account |
+  | platform | text (ps4/ps5/xbox/pc) | |
+  | coin_amount | integer | |
+  | price_paid | numeric | |
+  | discount_applied | integer | |
+  | ea_email | text | |
+  | ea_password_encrypted | text | AES-256 versleuteld |
+  | backup_codes_encrypted | text | AES-256 versleuteld |
+  | payment_method | text | |
+  | payment_status | text (pending/paid/failed/expired) | |
+  | nowpayments_id | text (nullable) | Referentie naar NOWPayments |
+  | expires_at | timestamp (nullable) | Vervaltijd crypto-betaling |
+  | status | text (queued/transferring/completed) | |
+  | created_at | timestamp | |
 
   **`prices`**
   | kolom | type |
@@ -176,9 +194,16 @@
 - [ ] Als klant een actieve korting heeft:
   - Prominente banner: "Special deal for you: X% discount active"
   - Groene "Order Now" knop → gaat naar configurator met korting toegepast
-- [ ] `/thank-you` pagina na succesvolle betaling
+- [ ] **`/thank-you` pagina** na succesvolle betaling:
+  - Toont orderoverzicht
+  - **Guest-to-account conversie**: als klant als gast betaalde, toon aanmeldknop:
+    `"Create an account to track your order and get loyalty discounts →"`
+  - Email is al bekend (ingevuld in configurator) → pre-fill het registratieformulier
+- [ ] **`/payment-failed` pagina**:
+  - Duidelijke foutmelding zonder technisch jargon
+  - 3 opties: Try again / Choose different method / Contact us
 
-**Resultaat:** Klant kan inloggen, orders volgen en korting gebruiken.
+**Resultaat:** Klant kan inloggen, orders volgen en korting gebruiken. Gasten worden na betaling zacht naar registratie geleid.
 
 ---
 
@@ -186,7 +211,11 @@
 
 **Doel:** Jij kunt prijzen aanpassen en orderstatus bijwerken.
 
-- [ ] Bescherm `/admin` route — alleen toegankelijk voor owner-account (Supabase Auth role check)
+- [ ] **Server-side beveiliging via Next.js middleware** (`middleware.ts`):
+  - Controleert Supabase sessie server-side vóór de pagina laadt
+  - Als geen geldige owner-sessie → redirect naar `/login`
+  - Niet client-side (dat is onveilig — iemand met de URL zou anders API's kunnen aanroepen)
+- [ ] Stel owner-rol in via Supabase `app_metadata` (niet via `user_metadata` — die is client-aanpasbaar)
 - [ ] Prijsbeheer:
   - Tabel met huidige prijs per platform
   - Inline bewerkbaar, opslaan met één klik
@@ -254,6 +283,9 @@
 - [ ] `/how-it-works` — visuele 4-stappen uitleg (Site → Encryption → Farm → Account)
 - [ ] `/bulk-orders` — VIP-landingspagina met contactformulier
 - [ ] `/contact` — contactformulier (naam, e-mail, bericht) → stuurt e-mail naar owner
+- [ ] `/terms` — Terms of Service pagina:
+  - Alleen toegankelijk via footer-link, niet in navigatie
+  - Inhoud: betalingen zijn definitief (geen chargebacks), EA ToS-disclaimer (klant is zelf verantwoordelijk voor accountrisico's), geen garantie op bans
 
 ---
 

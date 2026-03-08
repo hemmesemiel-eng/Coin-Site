@@ -44,8 +44,32 @@ Zie `docs/plans/2026-03-08-fc26-coins-website-design.md` voor het volledige desi
 | `/bulk-orders` | VIP-pagina voor orders van 10M+ coins |
 | `/dashboard` | Klantendashboard — orderstatus + loyaliteitskorting |
 | `/contact` | Contactformulier voor vragen en support |
-| `/admin` | Owner-only — prijzen en orderstatus beheren (beveiligd via Supabase Auth, niet toegankelijk voor bezoekers) |
-| `/thank-you` | Bedanktpagina na succesvolle betaling |
+| `/admin` | Owner-only — server-side beveiligd via Next.js middleware + Supabase app_metadata role |
+| `/thank-you` | Bedanktpagina + guest-to-account conversie prompt |
+| `/payment-failed` | Betaalmislukking — 3 opties: retry / andere methode / contact |
+| `/terms` | Terms of Service — alleen via footer bereikbaar, niet in navigatie |
+
+## Guest Checkout & Account Flow
+
+- Klanten bestellen zonder account (guest checkout)
+- Na betaling op `/thank-you`: prompt om account aan te maken
+  - Copy: "Create a free account to track your order, earn loyalty discounts, and get exclusive deals"
+  - Email is al pre-filled (ingevuld tijdens bestelling)
+  - Niet verplicht — duidelijke "Maybe later" optie
+
+## Admin Panel Beveiliging
+
+- Beveiligd via Next.js `middleware.ts` (server-side, niet client-side)
+- Controleert Supabase sessie + owner-rol via `app_metadata` (niet `user_metadata`)
+- Zonder geldige owner-sessie: redirect naar `/login`
+
+## Betaalmislukking Fallback
+
+- `/payment-failed` pagina met 3 opties:
+  1. "Try again" → nieuwe NOWPayments betaling aanmaken
+  2. "Choose different payment method" → terug naar betaalmethode stap
+  3. "Contact us" → `/contact`
+- NOWPayments betalingen verlopen na ~20 min → duidelijke melding + retry knop
 
 ## Order Configurator (homepage — progressive reveal)
 
