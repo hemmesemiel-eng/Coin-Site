@@ -4,7 +4,7 @@ const tickerItems = [
   "0% Ban Promise",
   "100% Secure",
   "Delivery Within 2 Hours",
-  "50,000+ Happy Customers",
+  "3,000+ Happy Customers",
   "All Platforms Supported",
   "24/7 Support",
 ];

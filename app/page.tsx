@@ -1,7 +1,6 @@
 import { Suspense } from 'react'
 import HeroSection from "@/components/HeroSection";
 import TrustBadges from "@/components/TrustBadges";
-import { BeamsBackground } from "@/components/ui/beams-background";
 import SecuritySection from "@/components/SecuritySection";
 import SocialProof from "@/components/SocialProof";
 import RecentActivity from "@/components/RecentActivity";
@@ -43,16 +42,14 @@ export default function HomePage() {
       <Suspense>
         <ReferralBanner />
       </Suspense>
-      <BeamsBackground intensity="medium">
-        <HeroSection />
-        <TrustBadges />
-        <section id="order" className="px-4 pb-32 pt-4 sm:px-6">
-          <div className="mx-auto max-w-6xl">
-            <OrderConfigurator />
-          </div>
-        </section>
-        <SecuritySection />
-      </BeamsBackground>
+      <HeroSection />
+      <TrustBadges />
+      <section id="order" className="px-4 pb-32 pt-4 sm:px-6">
+        <div className="mx-auto max-w-6xl">
+          <OrderConfigurator />
+        </div>
+      </section>
+      <SecuritySection />
       <SocialProof />
       <FAQ items={homeFAQ} />
       <RecentActivity />
