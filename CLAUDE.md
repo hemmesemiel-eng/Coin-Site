@@ -6,16 +6,75 @@ Gebouwd met Next.js + Supabase + Vercel.
 
 ## Project Status
 
-**Fase 1+2 voltooid.** Fase 3 is het volgende (homepage hero, trust, social proof).
+**Fase 1–13 voltooid (code-kant).** Alleen Fase 14 (testen + deployment) resteert.
+Supabase project nog niet aangemaakt — alle Supabase calls staan als `// TODO: Supabase`.
 
-**Al gebouwd:**
-- `app/layout.tsx` — root layout met Navbar + Footer + fonts + metadata
-- `app/globals.css` — design tokens (kleuren, fonts) via Tailwind v4 `@theme inline`
-- `components/Navbar.tsx` — sticky navbar met hamburger-menu (mobile), "Order Now" CTA
-- `components/Footer.tsx` — 4-koloms footer met navigatie, legal, betaalmethoden
-- `.env.local` — placeholders voor Supabase, NOWPayments, encryptiesleutel, Resend
+**Al gebouwd — volledige bestandslijst:**
+
+### Layout & Design
+- `app/layout.tsx` — root layout (Navbar + Footer + WelcomeBanner + CookieBanner)
+- `app/globals.css` — design tokens via Tailwind v4 `@theme inline`
+- `components/Navbar.tsx` — sticky navbar, hamburger menu, "Order Now" CTA
+- `components/Footer.tsx` — 4-koloms footer
+- `components/WelcomeBanner.tsx` — groene 5% korting banner bovenaan (fixed)
+- `components/CookieBanner.tsx` — GDPR cookie consent, localStorage
+
+### Homepage
+- `app/page.tsx` — composer: Hero → TrustBadges → Configurator → Security → SocialProof → FAQ
+- `components/HeroSection.tsx` — headline, ticker animatie, safety badge, CTA
+- `components/TrustBadges.tsx` — 3 kaarten (Secure / Delivery / Prices)
+- `components/SecuritySection.tsx` — 4 kaartjes + "100% Safe" banner
+- `components/SocialProof.tsx` — stats + 3 review kaarten
+- `components/RecentActivity.tsx` — fixed bottom-left, gesimuleerde aankopen
+- `components/FAQ.tsx` — herbruikbaar accordion (CSS grid animatie)
+- `components/ReferralBanner.tsx` — paarse banner bij `?ref=CODE` in URL
+
+### Order Configurator
+- `components/OrderConfigurator.tsx` — 5-staps progressive reveal, 5% welkomstkorting, YouTube modal
+
+### Pagina's
+- `app/how-it-works/page.tsx` — 4-stappen uitleg + FAQ
+- `app/bulk-orders/page.tsx` — VIP pagina + contactformulier + FAQ
+- `app/contact/page.tsx` — contactformulier + FAQ
+- `app/terms/page.tsx` — Terms of Service
+- `app/privacy/page.tsx` — Privacy Policy (GDPR)
+- `app/login/page.tsx` — login formulier
+- `app/register/page.tsx` — registratie met `?email=` pre-fill
+- `app/dashboard/page.tsx` — order overzicht + referral sectie (mock data)
+- `app/thank-you/page.tsx` — bedanktpagina + guest-to-account conversie
+- `app/payment-failed/page.tsx` — 3 opties: retry / andere methode / contact
+- `app/admin/page.tsx` — orders beheren, status doorstappen, EA credentials
+- `app/admin/prices/page.tsx` — inline bewerkbare prijzen per platform
+- `app/admin/customers/page.tsx` — klantenbeheer + kortingsbeheer
+
+### Backend / API
+- `lib/supabase.ts` — browser + server Supabase client
+- `lib/crypto.ts` — AES-256-CBC encryptie voor EA gegevens
+- `lib/discount.ts` — `WELCOME_DISCOUNT_PCT = 5`
+- `lib/nowpayments.ts` — NOWPayments API wrapper + webhook verificatie
+- `lib/bank-transfer.ts` — referentienummer generator (CF-XXXXXX) + bankgegevens
+- `lib/resend.ts` — Resend e-mail wrapper (native fetch)
+- `lib/email-templates.ts` — HTML e-mailtemplates (owner + klant)
+- `lib/email-service.ts` — combineert templates + verzending
+- `lib/referral.ts` — referral code generator, URL builder, 5% korting constante
+- `types/database.ts` — volledige TypeScript types voor alle Supabase tabellen
+- `supabase/schema.sql` — SQL schema met RLS policies + triggers
+- `supabase/seed.sql` — standaard prijzen ($10 per 1M coins)
+- `proxy.ts` — route bescherming voor `/admin/*` (klaar voor Supabase auth)
+- `app/api/orders/create/route.ts` — order aanmaken endpoint
+- `app/api/nowpayments/webhook/route.ts` — IPN webhook handler
+- `app/api/admin/orders/[id]/status/route.ts` — status update endpoint
+- `app/api/referral/validate/route.ts` — referral code validatie
+
+### Referral & Components
+- `components/ReferralSection.tsx` — dashboard sectie met referral link + clipboard copy
 
 Zie `docs/plans/plan.md` voor het volledige implementatieplan (14 fasen).
+
+## Admin Panel Beveiliging (update)
+
+- Beveiligd via Next.js `proxy.ts` (in Next.js 16 vervangt dit `middleware.ts`)
+- Supabase auth check staat klaar als commentaar — activeer na Supabase setup
 
 ## Hoe Claude moet communiceren
 

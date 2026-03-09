@@ -6,13 +6,13 @@ const stats = [
     stars: true,
   },
   {
-    value: "50,000+",
+    value: "3,000+",
     label: "Satisfied Customers",
     suffix: "",
     stars: false,
   },
   {
-    value: "100,000+",
+    value: "7,200+",
     label: "Orders Completed",
     suffix: "",
     stars: false,
@@ -84,12 +84,8 @@ export default function SocialProof() {
               }`}
             >
               {stat.stars && (
-                <div className="flex gap-0.5 mb-1">
-                  {Array.from({ length: 5 }).map((_, j) => (
-                    <svg key={j} viewBox="0 0 16 16" fill="currentColor" className="h-5 w-5 text-brand">
-                      <path d="M8 1.5l1.77 3.59 3.96.57-2.87 2.8.68 3.94L8 10.35l-3.54 1.85.68-3.94L2.27 5.66l3.96-.57L8 1.5z" />
-                    </svg>
-                  ))}
+                <div className="mb-1">
+                  <Stars count={5} />
                 </div>
               )}
               <div className="font-heading text-4xl font-bold text-foreground">
@@ -148,12 +144,6 @@ export default function SocialProof() {
         </div>
       </div>
 
-      <style>{`
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
     </section>
   );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import FAQ from "@/components/FAQ";
 
 export const metadata: Metadata = {
@@ -57,12 +58,7 @@ const howItWorksFAQ = [
   {
     question: "What happens after I place my order?",
     answer:
-      "You'll see a 'Queued' status right after payment. We'll start the transfer and update the status to 'Transferring', then 'Completed' once it's done. The whole thing usually takes under 2 hours.",
-  },
-  {
-    question: "Can I track my order?",
-    answer:
-      "Yes. Create a free account and you'll see live status updates in your dashboard. If you ordered as a guest, you can still create an account after — just use the same email.",
+      "Once your payment is confirmed, we get to work immediately. The whole transfer usually takes under 2 hours.",
   },
 ];
 
@@ -174,6 +170,27 @@ export default function HowItWorksPage() {
       </section>
 
       <FAQ items={howItWorksFAQ} />
+
+      {/* CTA */}
+      <section className="border-t border-border px-4 py-20 text-center sm:px-6">
+        <div className="mx-auto max-w-xl">
+          <h2 className="font-heading text-2xl font-bold text-foreground">
+            Ready to get your coins?
+          </h2>
+          <p className="mt-3 text-foreground-muted">
+            Takes less than 3 minutes. No account required.
+          </p>
+          <Link
+            href="/#order"
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-brand px-8 py-4 font-heading text-base font-bold text-background transition-opacity hover:opacity-90"
+          >
+            Order Now
+            <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M3 8h10M9 4l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

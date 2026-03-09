@@ -5,7 +5,7 @@
 **YouTube backup codes:** https://www.youtube.com/watch?v=nvIH96pXx-c
 **Datum:** 2026-03-08
 **Design doc:** `docs/plans/2026-03-08-fc26-coins-website-design.md`
-**Status:** Gereed voor implementatie
+**Status:** Fase 1–13 voltooid (code). Fase 14 = testen + deployment (wacht op Supabase setup).
 
 ---
 
@@ -71,69 +71,48 @@
 
 ---
 
-## Fase 3 — Homepage: Hero, Trust & Social Proof
+## Fase 3 — Homepage: Hero, Trust & Social Proof ✓ VOLTOOID
 
 **Doel:** De conversiegerichte bovenkant van de homepage.
 
-- [ ] **Hero sectie:**
-  - Grote headline "BUY FC 26 COINS" + groene subheadline "INSTANT DELIVERY"
-  - Trust-ticker animatie: "0% ban promise · 100% Secure · Delivery within 2 hours"
-  - CTA-knop "Get Coins Now" → scrollt naar order configurator
-- [ ] **3 Trust badges** (icoon + titel + tekst):
-  - 100% Secure / Super Quick Delivery / Best Prices
-- [ ] **"Your Security is Our Priority" sectie:**
-  - 4 icoon-kaartjes: SSL / Account Protection / Simple Process / Support
-  - "100% Safe Trading Guarantee" banner
-- [ ] **Social proof sectie:**
-  - Statistieken: sterren (4.9/5) + klantenaantal + orders voltooid
-  - 3 review-kaartjes met quotes
-- [ ] **Recent Activity Feed** (linksonder, pop-up animatie):
-  - Toont gesimuleerde recente aankopen
-- [ ] **Trustpilot widget** (zwevend, rechtsonder)
+- [x] **Hero sectie:** headline, ticker animatie, safety badge, CTA
+- [x] **3 Trust badges:** Secure / Instant Delivery / Best Prices
+- [x] **"Your Security is Our Priority" sectie:** 4 kaartjes + banner
+- [x] **Social proof sectie:** stats + 3 review kaarten
+- [x] **Recent Activity Feed:** fixed bottom-left, wisselt elke 4s
+- [x] **WelcomeBanner:** 5% korting banner bovenaan (fixed, boven navbar)
+- [ ] Trustpilot widget (uitgesteld — geen account)
 
 **Resultaat:** Volledige homepage boven de order configurator, visueel klaar.
 
 ---
 
-## Fase 4 — Order Configurator
+## Fase 4 — Order Configurator ✓ VOLTOOID
 
 **Doel:** Het hart van de site — de stap-voor-stap bestelflow op de homepage.
 
-- [ ] Bouw `components/OrderConfigurator.tsx` met progressive reveal-logica
-- [ ] **Stap 1 — Platform:**
-  - Grote knoppen: PS4 / PS5 / Xbox / PC
-- [ ] **Stap 2 — Coins (verschijnt na stap 1):**
-  - Preset knoppen: 250K / 500K / 1M / 2.5M / 5M / 10M
-  - Slider voor custom hoeveelheid
-- [ ] **Live Order Summary (altijd zichtbaar na stap 1+2):**
-  - Formaat: "500,000 Coins — €12.50"
-  - Prijs berekend op basis van huidige prijstabel uit Supabase
-- [ ] **Stap 3 — Gegevens (verschijnt na stap 1+2):**
-  - Velden: EA Account Email / Password / 6x Backup Codes
-  - Knop naast backup codes: "Where do I find these?" → opent inline YouTube-video modal
-- [ ] **Stap 4 — Betaalmethode (verschijnt als alle velden ingevuld zijn):**
-  - Opties: Crypto (NOWPayments) / Handmatige overboeking
-- [ ] **Stap 5 — Betalen:**
-  - Crypto: redirect naar NOWPayments betaalpagina
-  - Handmatig: toon bankgegevens + instructies
-- [ ] Ingelogde klant met korting: toon "Special deal for you: X% discount active" banner + "Order Now" knop bovenaan configurator
-- [ ] **Betaalmislukking fallback** — `/payment-failed` pagina met 3 opties:
-  1. "Try again" → maakt nieuwe NOWPayments betaling aan
-  2. "Choose different payment method" → terug naar stap 4 (betaalmethode)
-  3. "Contact us" → link naar `/contact`
-  - NOWPayments betalingen verlopen na ~20 minuten → toon duidelijke melding + "Try again" knop
-  - Voeg `expires_at` kolom toe aan orders tabel voor timeout-tracking
+- [x] `components/OrderConfigurator.tsx` met progressive reveal-logica
+- [x] Stap 1 — Platform (PS4 / PS5 / Xbox / PC)
+- [x] Stap 2 — Coins (presets + slider, formatCoins helper)
+- [x] Live Order Summary met 5% welkomstkorting automatisch toegepast
+- [x] Stap 3 — EA gegevens (email + wachtwoord + backup codes + YouTube modal)
+- [x] Stap 4 — Betaalmethode (Crypto / Bank Transfer / Paysafecard / Skrill)
+- [x] Stap 5 — Betalen (placeholder, koppeling Fase 8)
+- [x] `/payment-failed` pagina met 3 opties
+- [ ] Echte betaalkoppeling (wacht op Supabase + betaalaccounts)
 
-**Resultaat:** Volledige bestelflow werkt end-to-end inclusief foutafhandeling.
+**Resultaat:** UI volledig klaar, backend koppeling wacht op Supabase.
 
 ---
 
-## Fase 5 — Supabase: Database & Auth
+## Fase 5 — Supabase: Database & Auth ✓ CODE KLAAR (project nog aanmaken)
 
 **Doel:** Backend-fundament voor orders, gebruikers en prijzen.
 
-- [ ] Maak Supabase project aan
-- [ ] Definieer database-tabellen:
+- [ ] Maak Supabase project aan op supabase.com → vul `.env.local` in
+- [ ] Voer `supabase/schema.sql` uit in Supabase SQL Editor
+- [ ] Voer `supabase/seed.sql` uit (standaard prijzen)
+- [x] Definieer database-tabellen:
 
   **`profiles`** (uitbreiding op Supabase auth.users)
   | kolom | type |
@@ -172,164 +151,118 @@
   | price_per_1k | numeric |
   | updated_at | timestamp |
 
-- [ ] Stel Row Level Security (RLS) in:
-  - Klant ziet alleen eigen orders
-  - Admin ziet alle orders
-  - Prijzen zijn publiek leesbaar
-- [ ] Configureer Supabase Auth (email/password)
-- [ ] Maak `lib/supabase.ts` — client helper voor gebruik in de app
+- [x] RLS policies in schema.sql (klant eigen orders, admin alles, prijzen publiek)
+- [ ] Configureer Supabase Auth in dashboard (email/password aanzetten)
+- [x] `lib/supabase.ts` — browser + server client
+- [x] `types/database.ts` — volledige TypeScript types
+- [x] `lib/crypto.ts` — AES-256-CBC encryptie
 
-**Resultaat:** Database klaar, auth werkt, RLS beveiligt de data.
-
----
-
-## Fase 6 — Klantendashboard
-
-**Doel:** Ingelogde klanten kunnen orders volgen en korting zien.
-
-- [ ] Bescherm `/dashboard` route — redirect naar login als niet ingelogd
-- [ ] Bouw login- en registratiepagina (`/login`, `/register`)
-- [ ] Dashboard toont:
-  - Lijst van alle orders van de klant
-  - Per order: platform, hoeveelheid, prijs, datum, live status (Queued / Transferring / Completed)
-  - Real-time statusupdates via Supabase Realtime
-- [ ] Als klant een actieve korting heeft:
-  - Prominente banner: "Special deal for you: X% discount active"
-  - Groene "Order Now" knop → gaat naar configurator met korting toegepast
-- [ ] **`/thank-you` pagina** na succesvolle betaling:
-  - Toont orderoverzicht
-  - **Guest-to-account conversie**: als klant als gast betaalde, toon aanmeldknop:
-    `"Create an account to track your order and get loyalty discounts →"`
-  - Email is al bekend (ingevuld in configurator) → pre-fill het registratieformulier
-- [ ] **`/payment-failed` pagina**:
-  - Duidelijke foutmelding zonder technisch jargon
-  - 3 opties: Try again / Choose different method / Contact us
-
-**Resultaat:** Klant kan inloggen, orders volgen en korting gebruiken. Gasten worden na betaling zacht naar registratie geleid.
+**Resultaat:** Code klaar. Wacht op Supabase project aanmaken.
 
 ---
 
-## Fase 7 — Admin Panel
+## Fase 6 — Klantendashboard ✓ VOLTOOID (UI — wacht op Supabase)
 
-**Doel:** Jij kunt prijzen aanpassen en orderstatus bijwerken.
+- [x] `/login` en `/register` pagina's (register met `?email=` pre-fill)
+- [x] `/dashboard` — order overzicht met status badges, referral sectie
+- [x] `/thank-you` — bedanktpagina + guest-to-account conversie kaart
+- [x] `/payment-failed` — 3 opties: retry / andere methode / contact
+- [ ] Route bescherming dashboard (wacht op Supabase auth)
+- [ ] Real-time status updates via Supabase Realtime
 
-- [ ] **Server-side beveiliging via Next.js middleware** (`middleware.ts`):
-  - Controleert Supabase sessie server-side vóór de pagina laadt
-  - Als geen geldige owner-sessie → redirect naar `/login`
-  - Niet client-side (dat is onveilig — iemand met de URL zou anders API's kunnen aanroepen)
-- [ ] Stel owner-rol in via Supabase `app_metadata` (niet via `user_metadata` — die is client-aanpasbaar)
-- [ ] Prijsbeheer:
-  - Tabel met huidige prijs per platform
-  - Inline bewerkbaar, opslaan met één klik
-- [ ] Orderbeheer:
-  - Lijst van alle openstaande orders
-  - Per order: alle klantgegevens zichtbaar (EA email, wachtwoord, backup codes)
-  - Statusknopjes: Queued → Transferring → Completed
-- [ ] Kortingsbeheer:
-  - Zoek klant op e-mail
-  - Stel kortingspercentage in
-
-**Resultaat:** Jij kunt de operatie volledig beheren zonder in de database te duiken.
+**Resultaat:** UI klaar met mock data. Supabase koppeling volgt in Fase 14.
 
 ---
 
-## Fase 8 — Betaalintegraties
+## Fase 7 — Admin Panel ✓ VOLTOOID (UI — wacht op Supabase)
 
-**Doel:** Alle betaalmethoden verwerken en orderstatus bijwerken.
+- [x] `proxy.ts` — route bescherming `/admin/*` (Next.js 16 vervangt middleware.ts)
+- [x] `/admin` — orders beheren, status doorstappen, EA credentials show/hide
+- [x] `/admin/prices` — inline bewerkbare prijzen per platform
+- [x] `/admin/customers` — klantenbeheer + kortingsbeheer
+- [x] `app/api/admin/orders/[id]/status` — PATCH endpoint voor statusupdates
+- [ ] Owner-rol instellen via Supabase `app_metadata` (na Supabase setup)
+- [ ] Supabase auth check activeren in proxy.ts
+
+**Resultaat:** Admin UI klaar met mock data. Auth koppeling volgt na Supabase setup.
+
+---
+
+## Fase 8 — Betaalintegraties ✓ CODE KLAAR (accounts nog aanmaken)
 
 ### Crypto — NOWPayments
-- [ ] Maak NOWPayments account aan en genereer API key
-- [ ] Bouw `lib/nowpayments.ts` — API-wrapper
-- [ ] Bij checkout: maak betaling aan via NOWPayments API → redirect klant
-- [ ] Bouw webhook `app/api/nowpayments/webhook/route.ts`:
-  - Ontvangt bevestiging, verifieert handtekening, zet status op "Queued"
-  - Afhandeling: betaling verlopen → status "expired", underpaid → notificatie
+- [ ] NOWPayments account aanmaken + API key in `.env.local`
+- [x] `lib/nowpayments.ts` — API-wrapper (createPayment, getPayment, verifyWebhookSignature)
+- [x] `app/api/nowpayments/webhook/route.ts` — IPN handler (finished/expired/underpaid)
 
 ### Bank Transfer
-- [ ] Genereer uniek referentienummer per order: `CF-` + 6 random tekens
-- [ ] Toon IBAN, naam, bedrag en referentie na checkout
-- [ ] Order status: "Awaiting Payment" (24 uur geldig)
-- [ ] Admin toont lijst van openstaande bankoverschrijvingen
-- [ ] "Confirm Payment Received" knop → order naar "Queued"
+- [x] `lib/bank-transfer.ts` — CF-XXXXXX referentie generator + bankgegevens uit env
+- [ ] IBAN + banknaam invullen in `.env.local`
 
 ### Paysafecard
-- [ ] Maak Paysafecard merchant account aan
-- [ ] Integreer Paysafecard Payments API
-- [ ] Klant voert PIN-code in → directe verificatie via API → "Queued"
+- [ ] Paysafecard merchant account aanmaken
+- [ ] API integratie (nog niet gebouwd)
 
 ### Skrill
-- [ ] Maak Skrill merchant account aan
-- [ ] Integreer Skrill Quick Checkout
-- [ ] Webhook bevestigt betaling → "Queued"
+- [ ] Skrill merchant account aanmaken
+- [ ] API integratie (nog niet gebouwd)
 
-### Betaalmislukking (alle methoden)
-- [ ] Bij mislukking: redirect naar `/payment-failed`
-- [ ] Order status: "failed" in Supabase
-- [ ] "Try again" maakt nieuwe betaalpoging aan voor dezelfde order
+### Order API
+- [x] `app/api/orders/create/route.ts` — order aanmaken, prijsberekening, encryptie
 
-**Resultaat:** Alle 4 betaalmethoden werken end-to-end.
+**Resultaat:** Crypto + bank transfer code klaar. Paysafecard + Skrill volgen na accounts.
 
 ---
 
-## Fase 9 — E-mailnotificaties
+## Fase 9 — E-mailnotificaties ✓ CODE KLAAR
 
-**Doel:** Jij en de klant ontvangen relevante e-mails.
+- [x] `lib/resend.ts` — Resend API wrapper (native fetch, geen SDK)
+- [x] `lib/email-templates.ts` — HTML templates met inline CSS (owner + klant)
+- [x] `lib/email-service.ts` — notifyOwnerNewOrder + sendOrderConfirmation
+- [ ] Resend account aanmaken + API key in `.env.local`
+- [ ] E-mails activeren in `app/api/orders/create/route.ts` (TODO-blokken uncommentariëren)
 
-- [ ] Kies e-maildienst: Resend (aanbevolen — gratis tier, eenvoudige API)
-- [ ] E-mail aan owner na nieuwe betaalde order:
-  - Platform, coins, EA email, wachtwoord, backup codes
-- [ ] Orderbevestigingsmail aan klant:
-  - Overzicht van bestelling
-  - Link naar dashboard voor live status
-
-**Resultaat:** Jij wordt direct genotificeerd bij elke order.
+**Resultaat:** Code klaar. Activeer na Resend account aanmaken.
 
 ---
 
-## Fase 10 — Referral Systeem
+## Fase 10 — Referral Systeem ✓ VOLTOOID (UI — wacht op Supabase)
 
-**Doel:** Klanten kunnen andere klanten doorverwijzen voor korting.
+- [x] `lib/referral.ts` — code generator, URL builder, REFERRAL_DISCOUNT_PCT = 5
+- [x] `components/ReferralBanner.tsx` — banner bij `?ref=CODE`, opslaat in localStorage
+- [x] `components/ReferralSection.tsx` — dashboard sectie met copy-to-clipboard
+- [x] `app/api/referral/validate/route.ts` — validatie endpoint (mock)
+- [ ] Referral korting toepassen bij order aanmaken (wacht op Supabase)
+- [ ] Referral code genereren bij registratie (wacht op Supabase)
 
-- [ ] Elke klant krijgt een unieke referral-link bij registratie
-- [ ] Bezoeker via referral-link → `?ref=CODE` opgeslagen in cookie
-- [ ] Na eerste aankoop via referral: zowel nieuwe klant als referrer krijgt korting
-- [ ] Kortingslogica instelbaar via admin panel
-
-**Resultaat:** Organische groei via doorverwijzingen.
-
----
-
-## Fase 11 — Overige Pagina's
-
-- [ ] `/how-it-works` — visuele 4-stappen uitleg (Site → Encryption → Farm → Account)
-- [ ] `/bulk-orders` — VIP-landingspagina met contactformulier
-- [ ] `/contact` — contactformulier (naam, e-mail, bericht) → stuurt e-mail naar owner
-- [ ] `/terms` — Terms of Service (alleen via footer):
-  - Betalingen zijn definitief, geen chargebacks
-  - EA ToS-disclaimer: klant is zelf verantwoordelijk voor accountrisico's
-- [ ] `/privacy` — Privacy Policy (alleen via footer):
-  - Welke data wordt verzameld (email, EA-gegevens)
-  - Hoe data wordt opgeslagen en beveiligd
-  - GDPR-rechten van de klant
+**Resultaat:** UI klaar. Korting koppeling volgt na Supabase setup.
 
 ---
 
-## Fase 12 — FAQ per Pagina
+## Fase 11 — Overige Pagina's ✓ VOLTOOID
 
-- [ ] Bouw herbruikbaar `components/FAQ.tsx` accordion-component
-- [ ] Voeg relevante FAQ toe aan elke pagina:
-  - Homepage: veiligheid, levertijd, wat zijn coins
-  - How It Works: hoe werkt de transfer
-  - Bulk Orders: minimum, levertijd, contact
-  - Dashboard: hoe order volgen, hoe korting gebruiken
+- [x] `/how-it-works` — 4-stappen uitleg + FAQ accordion
+- [x] `/bulk-orders` — VIP pagina + contactformulier + FAQ
+- [x] `/contact` — contactformulier + info blok + FAQ
+- [x] `/terms` — Terms of Service (9 secties, EA disclaimer)
+- [x] `/privacy` — Privacy Policy (GDPR-compliant, 10 secties)
 
 ---
 
-## Fase 13 — Cookie & Privacy Banner
+## Fase 12 — FAQ per Pagina ✓ VOLTOOID
 
-- [ ] Simpele GDPR-banner bij eerste bezoek
-- [ ] Keuze: accepteren of weigeren
-- [ ] Voorkeur opslaan in localStorage
+- [x] `components/FAQ.tsx` — accordion met CSS grid animatie, one-at-a-time
+- [x] Homepage FAQ (5 vragen: veiligheid, levertijd, platforms, betaalmethoden, support)
+- [x] How It Works FAQ (5 vragen: EA wachtwoord, backup codes, ban risico, flow, tracking)
+- [x] Bulk Orders FAQ (4 vragen: minimum, prijs, levertijd, meerdere accounts)
+- [x] Contact FAQ (3 vragen: responstijd, coins niet ontvangen, fout in order)
+
+---
+
+## Fase 13 — Cookie & Privacy Banner ✓ VOLTOOID
+
+- [x] `components/CookieBanner.tsx` — GDPR banner, Accept/Decline, localStorage
+- [x] Toegevoegd aan `app/layout.tsx`
 
 ---
 

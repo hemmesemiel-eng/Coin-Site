@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import FAQ from "@/components/FAQ";
+import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact — Coinfactory",
@@ -55,79 +56,7 @@ export default function ContactPage() {
         <div className="mx-auto grid max-w-5xl gap-10 lg:grid-cols-5">
           {/* Contact form — wider column */}
           <div className="lg:col-span-3">
-            <form className="flex flex-col gap-5">
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div className="flex flex-col gap-2">
-                  <label
-                    htmlFor="contact-name"
-                    className="text-sm font-medium text-foreground"
-                  >
-                    Name
-                  </label>
-                  <input
-                    id="contact-name"
-                    type="text"
-                    name="name"
-                    placeholder="Your name"
-                    className="rounded-lg border border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-foreground-muted focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label
-                    htmlFor="contact-email"
-                    className="text-sm font-medium text-foreground"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="contact-email"
-                    type="email"
-                    name="email"
-                    placeholder="you@example.com"
-                    className="rounded-lg border border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-foreground-muted focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="contact-subject"
-                  className="text-sm font-medium text-foreground"
-                >
-                  Subject
-                </label>
-                <input
-                  id="contact-subject"
-                  type="text"
-                  name="subject"
-                  placeholder="e.g. Order not received, Question about payment..."
-                  className="rounded-lg border border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-foreground-muted focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="contact-message"
-                  className="text-sm font-medium text-foreground"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="contact-message"
-                  name="message"
-                  rows={6}
-                  placeholder="Describe your issue or question in detail..."
-                  className="resize-none rounded-lg border border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-foreground-muted focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="rounded-lg bg-brand px-6 py-3 font-heading font-semibold text-background transition-opacity hover:opacity-90"
-              >
-                Send Message
-              </button>
-            </form>
+            <ContactForm />
           </div>
 
           {/* Info block */}
