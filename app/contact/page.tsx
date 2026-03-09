@@ -28,7 +28,7 @@ const contactFAQ = [
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Hero */}
       <section className="relative overflow-hidden px-4 py-24 text-center sm:px-6">
         <div

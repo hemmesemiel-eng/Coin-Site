@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
 import WelcomeBanner from "@/components/WelcomeBanner";
 import { AuthProvider } from "@/lib/auth-context";
+import { BeamsBackground } from "@/components/ui/beams-background";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -38,7 +39,9 @@ export default function RootLayout({
         <AuthProvider>
           <WelcomeBanner />
           <Navbar />
-          <main className="pt-[100px]">{children}</main>
+          <BeamsBackground intensity="subtle">
+            <main className="pt-[100px]">{children}</main>
+          </BeamsBackground>
           <Footer />
           <CookieBanner />
         </AuthProvider>
