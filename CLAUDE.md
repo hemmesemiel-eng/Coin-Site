@@ -6,8 +6,16 @@ Gebouwd met Next.js + Supabase + Vercel.
 
 ## Project Status
 
-In ontwerp-/planningsfase. Nog geen code geschreven.
-Zie `docs/plans/2026-03-08-fc26-coins-website-design.md` voor het volledige design document.
+**Fase 1+2 voltooid.** Fase 3 is het volgende (homepage hero, trust, social proof).
+
+**Al gebouwd:**
+- `app/layout.tsx` — root layout met Navbar + Footer + fonts + metadata
+- `app/globals.css` — design tokens (kleuren, fonts) via Tailwind v4 `@theme inline`
+- `components/Navbar.tsx` — sticky navbar met hamburger-menu (mobile), "Order Now" CTA
+- `components/Footer.tsx` — 4-koloms footer met navigatie, legal, betaalmethoden
+- `.env.local` — placeholders voor Supabase, NOWPayments, encryptiesleutel, Resend
+
+Zie `docs/plans/plan.md` voor het volledige implementatieplan (14 fasen).
 
 ## Hoe Claude moet communiceren
 

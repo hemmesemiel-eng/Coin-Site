@@ -2,6 +2,8 @@
 
 ## [Unreleased] — Planning fase
 
+- Fase 1+2: Next.js setup, design tokens, Navbar en Footer (2026-03-09)
+
 - Add brand name, pricing, payment methods, bank transfer flow, Privacy Policy (2026-03-08)
 
 - Update plan: guest checkout, payment fallback, admin security, ToS, footer layout (2026-03-08)

@@ -3,6 +3,8 @@ import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CookieBanner from "@/components/CookieBanner";
+import WelcomeBanner from "@/components/WelcomeBanner";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -32,9 +34,11 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} font-sans antialiased bg-background text-foreground`}
       >
+        <WelcomeBanner />
         <Navbar />
-        <main className="pt-16">{children}</main>
+        <main className="pt-[100px]">{children}</main>
         <Footer />
+        <CookieBanner />
       </body>
     </html>
   );
