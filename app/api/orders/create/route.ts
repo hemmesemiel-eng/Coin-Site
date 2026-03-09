@@ -1,3 +1,4 @@
+// import { notifyOwnerNewOrder, sendOrderConfirmation } from '@/lib/email-service'
 import { encrypt } from '@/lib/crypto'
 import { generateBankReference, getBankDetails } from '@/lib/bank-transfer'
 import { createPayment } from '@/lib/nowpayments'
@@ -50,6 +51,23 @@ export async function POST(request: Request) {
 
   // Tijdelijke mock order ID totdat Supabase live is
   const mockOrderId = 'CF-' + Math.random().toString(36).substring(2, 8).toUpperCase()
+
+  // TODO: Email — uncomment wanneer Supabase live is
+  // await notifyOwnerNewOrder({
+  //   orderId: mockOrderId,
+  //   platform,
+  //   coinAmount,
+  //   pricePaid: total,
+  //   paymentMethod,
+  //   eaEmail,
+  //   eaPassword,        // plain text — decrypt vóór meegeven
+  //   backupCodes,       // plain text — decrypt vóór meegeven
+  //   customerEmail: guestEmail ?? '',
+  //   createdAt: new Date().toISOString(),
+  // })
+  // if (guestEmail) {
+  //   await sendOrderConfirmation(guestEmail, { orderId: mockOrderId, platform, coinAmount, pricePaid: total })
+  // }
 
   if (paymentMethod === 'bank_transfer') {
     const reference = generateBankReference()

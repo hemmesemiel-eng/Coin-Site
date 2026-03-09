@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ReferralSection from "@/components/ReferralSection";
 
 // TODO: Supabase
 // const { data: orders } = await supabase.from('orders').select('*').eq('user_id', user.id)
@@ -167,6 +168,8 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      <ReferralSection />
     </main>
   );
 }

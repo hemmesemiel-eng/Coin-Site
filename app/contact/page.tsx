@@ -1,10 +1,29 @@
 import type { Metadata } from "next";
+import FAQ from "@/components/FAQ";
 
 export const metadata: Metadata = {
   title: "Contact — Coinfactory",
   description:
     "Get in touch with Coinfactory support. We typically respond within 2-4 hours.",
 };
+
+const contactFAQ = [
+  {
+    question: "How fast do you respond to messages?",
+    answer:
+      "Usually within 2-4 hours. We're available every day from 10:00 to 22:00 CET. For urgent order issues, mention 'URGENT' in your subject line.",
+  },
+  {
+    question: "My payment went through but I haven't received my coins yet. What do I do?",
+    answer:
+      "Check your dashboard first — if it says 'Queued' or 'Transferring', it's in progress. If it's been over 3 hours with no update, send us a message with your order ID and we'll check it immediately.",
+  },
+  {
+    question: "I made a mistake in my order (wrong platform, wrong EA details). Can I change it?",
+    answer:
+      "Contact us as soon as possible — before the transfer starts, we can usually fix it. Once a transfer is in progress, changes aren't possible.",
+  },
+];
 
 export default function ContactPage() {
   return (
@@ -160,6 +179,8 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      <FAQ items={contactFAQ} />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import FAQ from "@/components/FAQ";
 
 export const metadata: Metadata = {
   title: "Bulk Orders — Coinfactory",
@@ -30,6 +31,29 @@ const benefits = [
 ];
 
 const platforms = ["PS4", "PS5", "Xbox", "PC"];
+
+const bulkFAQ = [
+  {
+    question: "What's the minimum for a bulk order?",
+    answer:
+      "Bulk orders start at 10 million coins. Below that, just use the regular order form on the homepage — it's instant.",
+  },
+  {
+    question: "Do I get a better price for bulk orders?",
+    answer:
+      "Yes. Bulk orders get custom pricing that's lower than our standard rate. Fill in the contact form and we'll come back to you with a quote within a few hours.",
+  },
+  {
+    question: "How long does a bulk order take to deliver?",
+    answer:
+      "Larger orders take a bit more time — usually between 4-12 hours depending on the amount. We'll give you an estimated delivery time when we confirm your order.",
+  },
+  {
+    question: "Can I split the coins across multiple accounts?",
+    answer:
+      "Yes, that's possible. Just mention it in your message and we'll arrange it. We'll need the EA credentials for each account.",
+  },
+];
 
 export default function BulkOrdersPage() {
   return (
@@ -212,6 +236,8 @@ export default function BulkOrdersPage() {
           </form>
         </div>
       </section>
+
+      <FAQ items={bulkFAQ} />
     </div>
   );
 }

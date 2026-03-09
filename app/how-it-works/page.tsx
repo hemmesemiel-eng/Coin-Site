@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import FAQ from "@/components/FAQ";
 
 export const metadata: Metadata = {
   title: "How It Works — Coinfactory",
@@ -37,26 +38,31 @@ const steps = [
   },
 ];
 
-const faq = [
+const howItWorksFAQ = [
   {
-    question: "Is my account safe?",
+    question: "Why do you need my EA password?",
     answer:
-      "We use the same transfer method as every professional coin service. Your credentials are encrypted end-to-end and never shared. That said, coin trading does carry a small inherent risk with EA — we are transparent about this in our Terms of Service.",
+      "To transfer coins, we log into your account and send them from a 'mule' account using the in-game transfer method. It's the same method everyone in this space uses — it's why we can guarantee no bans.",
   },
   {
-    question: "How long does delivery take?",
+    question: "What are backup codes and where do I find them?",
     answer:
-      "Most orders are completed within 2 hours of payment confirmation. During peak hours (evenings CET) it can take up to 4 hours. Bulk orders may take longer.",
+      "Backup codes are one-time login codes from EA's two-factor authentication. We need them in case EA asks for verification during the login. You can find them in your EA security settings — there's a video guide in the order form that shows you exactly where.",
   },
   {
-    question: "What is the transfer method?",
+    question: "Will EA ban my account?",
     answer:
-      "We use the standard in-game transfer method: we log into your account and complete the trade. No bots, no third-party software. This is the safest method available.",
+      "We've processed thousands of orders and have a 0% ban rate. The transfer method we use is discreet and doesn't trigger EA's detection systems. That said, coin trading technically violates EA's ToS, so there's always a theoretical risk — we just make it as small as possible.",
   },
   {
-    question: "What if something goes wrong?",
+    question: "What happens after I place my order?",
     answer:
-      "Contact us via the support page. We respond within 2-4 hours. If a transfer fails due to an error on our side, we will retry or issue a refund — your choice.",
+      "You'll see a 'Queued' status right after payment. We'll start the transfer and update the status to 'Transferring', then 'Completed' once it's done. The whole thing usually takes under 2 hours.",
+  },
+  {
+    question: "Can I track my order?",
+    answer:
+      "Yes. Create a free account and you'll see live status updates in your dashboard. If you ordered as a guest, you can still create an account after — just use the same email.",
   },
 ];
 
@@ -167,26 +173,7 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="border-t border-border px-4 py-20 sm:px-6">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="mb-10 font-heading text-2xl font-bold text-foreground sm:text-3xl">
-            Frequently Asked Questions
-          </h2>
-          <div className="flex flex-col gap-6">
-            {faq.map((item) => (
-              <div key={item.question} className="rounded-xl border border-border bg-surface p-6">
-                <h3 className="mb-3 font-heading text-base font-semibold text-foreground">
-                  {item.question}
-                </h3>
-                <p className="text-sm text-foreground-muted leading-relaxed">
-                  {item.answer}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <FAQ items={howItWorksFAQ} />
     </div>
   );
 }
