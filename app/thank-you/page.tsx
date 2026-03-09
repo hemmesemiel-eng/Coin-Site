@@ -59,10 +59,10 @@ export default function ThankYouPage() {
         </p>
 
         <Link
-          href="/dashboard"
+          href="/"
           className="mt-8 inline-block rounded-lg bg-brand px-6 py-3 text-sm font-semibold text-background transition-opacity hover:opacity-90"
         >
-          Track your order →
+          Back to home →
         </Link>
       </div>
 
@@ -73,8 +73,8 @@ export default function ThankYouPage() {
             Save your order history
           </h2>
           <p className="mt-2 text-sm text-foreground-muted">
-            Create a free account to track your order, earn loyalty discounts,
-            and get exclusive deals.
+            Create a free account to earn loyalty discounts and get exclusive
+            deals.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link

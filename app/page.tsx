@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import HeroSection from "@/components/HeroSection";
 import TrustBadges from "@/components/TrustBadges";
+import { BeamsBackground } from "@/components/ui/beams-background";
 import SecuritySection from "@/components/SecuritySection";
 import SocialProof from "@/components/SocialProof";
 import RecentActivity from "@/components/RecentActivity";
@@ -17,12 +18,12 @@ const homeFAQ = [
   {
     question: "How fast will I get my coins?",
     answer:
-      "Most orders are done within 2 hours, often faster. Once your payment is confirmed, we get to work immediately. You'll be able to track the status live in your dashboard.",
+      "Most orders are done within 2 hours, often faster. Once your payment is confirmed, we get to work immediately.",
   },
   {
     question: "What platforms do you support?",
     answer:
-      "PS4, PS5, Xbox (One and Series X/S), and PC — all at the same price. Just pick your platform when you place your order.",
+      "PS4, PS5, Xbox (One and Series X/S), and PC — on every platform. Just pick your platform when you place your order.",
   },
   {
     question: "What payment methods do you accept?",
@@ -42,14 +43,16 @@ export default function HomePage() {
       <Suspense>
         <ReferralBanner />
       </Suspense>
-      <HeroSection />
-      <TrustBadges />
-      <section id="order" className="px-4 py-20 sm:px-6">
-        <div className="mx-auto max-w-2xl">
-          <OrderConfigurator />
-        </div>
-      </section>
-      <SecuritySection />
+      <BeamsBackground intensity="medium">
+        <HeroSection />
+        <TrustBadges />
+        <section id="order" className="px-4 pb-32 pt-4 sm:px-6">
+          <div className="mx-auto max-w-6xl">
+            <OrderConfigurator />
+          </div>
+        </section>
+        <SecuritySection />
+      </BeamsBackground>
       <SocialProof />
       <FAQ items={homeFAQ} />
       <RecentActivity />

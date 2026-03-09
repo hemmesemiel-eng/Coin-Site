@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import FAQ from "@/components/FAQ";
+import BulkOrderForm from "@/components/BulkOrderForm";
 
 export const metadata: Metadata = {
   title: "Bulk Orders — Coinfactory",
@@ -29,8 +31,6 @@ const benefits = [
       "All standard payment methods available. For very large orders, custom payment arrangements are possible.",
   },
 ];
-
-const platforms = ["PS4", "PS5", "Xbox", "PC"];
 
 const bulkFAQ = [
   {
@@ -133,111 +133,29 @@ export default function BulkOrdersPage() {
             with a custom quote.
           </p>
 
-          <form className="flex flex-col gap-5">
-            <div className="grid gap-5 sm:grid-cols-2">
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="bulk-name"
-                  className="text-sm font-medium text-foreground"
-                >
-                  Name
-                </label>
-                <input
-                  id="bulk-name"
-                  type="text"
-                  name="name"
-                  placeholder="Your name"
-                  className="rounded-lg border border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-foreground-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="bulk-email"
-                  className="text-sm font-medium text-foreground"
-                >
-                  Email
-                </label>
-                <input
-                  id="bulk-email"
-                  type="email"
-                  name="email"
-                  placeholder="you@example.com"
-                  className="rounded-lg border border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-foreground-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                />
-              </div>
-            </div>
-
-            <div className="grid gap-5 sm:grid-cols-2">
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="bulk-amount"
-                  className="text-sm font-medium text-foreground"
-                >
-                  Desired Amount (coins)
-                </label>
-                <input
-                  id="bulk-amount"
-                  type="text"
-                  name="amount"
-                  placeholder="e.g. 50,000,000"
-                  className="rounded-lg border border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-foreground-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="bulk-platform"
-                  className="text-sm font-medium text-foreground"
-                >
-                  Platform
-                </label>
-                <select
-                  id="bulk-platform"
-                  name="platform"
-                  defaultValue=""
-                  className="rounded-lg border border-border bg-surface px-4 py-3 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                >
-                  <option value="" disabled>
-                    Select platform
-                  </option>
-                  {platforms.map((p) => (
-                    <option key={p} value={p}>
-                      {p}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="bulk-message"
-                className="text-sm font-medium text-foreground"
-              >
-                Message{" "}
-                <span className="text-foreground-muted font-normal">
-                  (optional)
-                </span>
-              </label>
-              <textarea
-                id="bulk-message"
-                name="message"
-                rows={4}
-                placeholder="Any additional info — preferred payment method, timeline, etc."
-                className="resize-none rounded-lg border border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-foreground-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="mt-2 rounded-lg bg-accent px-6 py-3 font-heading font-semibold text-white transition-opacity hover:opacity-90"
-            >
-              Send Request
-            </button>
-          </form>
+          <BulkOrderForm />
         </div>
       </section>
 
       <FAQ items={bulkFAQ} />
+
+      {/* CTA for regular orders */}
+      <section className="border-t border-border px-4 py-16 text-center sm:px-6">
+        <div className="mx-auto max-w-xl">
+          <p className="text-sm text-foreground-muted">
+            Need less than 10M coins?
+          </p>
+          <Link
+            href="/#order"
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 font-heading text-sm font-bold text-background transition-opacity hover:opacity-90"
+          >
+            Use the regular order form
+            <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M3 8h10M9 4l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
 import WelcomeBanner from "@/components/WelcomeBanner";
+import { AuthProvider } from "@/lib/auth-context";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -34,11 +35,13 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} font-sans antialiased bg-background text-foreground`}
       >
-        <WelcomeBanner />
-        <Navbar />
-        <main className="pt-[100px]">{children}</main>
-        <Footer />
-        <CookieBanner />
+        <AuthProvider>
+          <WelcomeBanner />
+          <Navbar />
+          <main className="pt-[100px]">{children}</main>
+          <Footer />
+          <CookieBanner />
+        </AuthProvider>
       </body>
     </html>
   );

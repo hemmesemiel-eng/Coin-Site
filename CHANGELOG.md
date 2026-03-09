@@ -2,6 +2,8 @@
 
 ## [Unreleased] — Planning fase
 
+- Fase 9-10-12-13: e-mail, referral, FAQ accordion, cookie banner (2026-03-09)
+
 - Build Fase 3-8: homepage, configurator, dashboard, admin, betaalintegraties (2026-03-09)
 
 - Fase 1+2: Next.js setup, design tokens, Navbar en Footer (2026-03-09)

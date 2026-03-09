@@ -14,19 +14,9 @@ export default function HeroSection() {
 
   return (
     <section className="relative flex min-h-[88vh] flex-col items-center justify-center overflow-hidden px-4 text-center">
-      {/* Subtiele radiale glow */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden="true"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 50% at 50% 30%, rgba(0,255,135,0.07) 0%, transparent 65%)",
-        }}
-      />
-
       {/* Safety badge */}
       <div
-        className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-xs font-semibold text-foreground-muted"
+        className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-foreground-muted backdrop-blur-sm"
         style={{ animation: "fadeUp 0.5s ease both" }}
       >
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3.5 w-3.5 text-brand">
@@ -63,7 +53,7 @@ export default function HeroSection() {
       {/* CTA */}
       <div
         style={{ animation: "fadeUp 0.5s ease both", animationDelay: "320ms" }}
-        className="mt-10"
+        className="mt-10 flex flex-col items-center gap-4"
       >
         <Link
           href="/#order"
@@ -74,10 +64,13 @@ export default function HeroSection() {
             <path d="M3 8h10M9 4l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </Link>
+        <p className="text-xs text-foreground-muted/70 tracking-wide">
+          Trusted by 3,000+ players &nbsp;&middot;&nbsp; No account required
+        </p>
       </div>
 
       {/* Trust ticker */}
-      <div className="absolute bottom-0 left-0 right-0 overflow-hidden border-t border-border bg-surface/60 py-3 backdrop-blur-sm">
+      <div className="absolute bottom-0 left-0 right-0 overflow-hidden border-t border-white/5 bg-white/[0.03] py-3 backdrop-blur-sm">
         <div
           className="flex gap-12 whitespace-nowrap"
           style={{ animation: "ticker 22s linear infinite" }}
@@ -94,16 +87,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <style>{`
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(16px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes ticker {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
-        }
-      `}</style>
     </section>
   );
 }
