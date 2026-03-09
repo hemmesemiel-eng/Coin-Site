@@ -30,31 +30,31 @@
 
 ---
 
-## Fase 1 — Project Setup
+## Fase 1 — Project Setup ✓ VOLTOOID
 
 **Doel:** Werkende Next.js-applicatie met alle dependencies.
 
-- [ ] Initialiseer Next.js project met App Router (`npx create-next-app@latest`)
-- [ ] Installeer dependencies: `@supabase/supabase-js`, `tailwindcss`, Shadcn/ui, `nowpayments-api`
-- [ ] Configureer Tailwind met custom kleuren (`#0a0a0f`, `#00ff87`, `#6c63ff`)
-- [ ] Voeg Space Grotesk en Inter toe via Google Fonts
-- [ ] Maak `.env.local` aan met placeholders voor Supabase URL/key en NOWPayments API key
+- [x] Initialiseer Next.js project met App Router (`npx create-next-app@latest`)
+- [x] Installeer dependencies: `@supabase/supabase-js`, `tailwindcss`, `nowpayments-api`
+- [x] Configureer Tailwind met custom kleuren (`#0a0a0f`, `#00ff87`, `#6c63ff`)
+- [x] Voeg Space Grotesk en Inter toe via Google Fonts
+- [x] Maak `.env.local` aan met placeholders voor Supabase URL/key en NOWPayments API key
 - [ ] Hosting via Vercel — eigenaar regelt dit zelf via vercel.com
 
 **Resultaat:** Site draait lokaal op `localhost:3000`.
 
 ---
 
-## Fase 2 — Layout, Navigatie & Design-systeem
+## Fase 2 — Layout, Navigatie & Design-systeem ✓ VOLTOOID
 
 **Doel:** Globale shell waar alle pagina's in passen.
 
-- [ ] Maak `app/layout.tsx` — root layout met font, achtergrondkleur, metadata
-- [ ] Bouw `components/Navbar.tsx`:
+- [x] Maak `app/layout.tsx` — root layout met font, achtergrondkleur, metadata
+- [x] Bouw `components/Navbar.tsx`:
   - Logo (placeholder) + links: Home / How It Works / Bulk Orders / Contact
   - Rechtsboven: "Order Now" CTA-knop (groen)
   - Op mobiel: hamburger-menu
-- [ ] Bouw `components/Footer.tsx` met 4-koloms layout:
+- [x] Bouw `components/Footer.tsx` met 4-koloms layout:
   ```
   [Logo + tagline + social]  [Navigation]      [Legal]        [Betaalmethoden]
                               Home              Terms          Crypto (BTC/ETH/USDT)
@@ -64,8 +64,8 @@
   ─────────────────────────────────────────────────────────────────────────
   © 2026 [Merknaam]. All rights reserved.  |  "Fast · Safe · Trusted"
   ```
-- [ ] Maak basis design tokens (kleuren, spacing) als Tailwind config
-- [ ] Stel globale CSS in (scroll-gedrag, selectiekleur, etc.)
+- [x] Maak basis design tokens (kleuren, spacing) via Tailwind v4 `@theme inline` in `globals.css`
+- [x] Stel globale CSS in
 
 **Resultaat:** Elke pagina heeft navigatie en footer.
 
